@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GoogleRecaptchaV3Service
+namespace AspNetCoreRecaptchaV3ValidationDemo
 {
     public class Program
     {

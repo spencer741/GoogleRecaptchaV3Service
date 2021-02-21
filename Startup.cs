@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace GoogleRecaptchaV3Service
+namespace AspNetCoreRecaptchaV3ValidationDemo
 {
     public class Startup
     {
