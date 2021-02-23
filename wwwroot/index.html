@@ -11,6 +11,7 @@
     body {
       background-color: whitesmoke;
     }
+
     form {
       float: left;
       border: 1px solid rgb(21, 0, 255);
@@ -117,6 +118,8 @@
     </button>
   </form>
   <script>
+
+    //init
     var globkey = "";
     window.onload = function () {
       document.getElementById("log").scrollTop = document.getElementById(
@@ -134,13 +137,7 @@
       toggleLoader(2, "hidden");
     };
 
-    //visible/hidden
-    function toggleLoader(loaderNum, visibility) {
-      document.getElementById(
-        "loader" + loaderNum
-      ).style.visibility = visibility;
-    }
-
+    //core
     async function onClickSiteKey(e) {
       e.preventDefault();
 
@@ -171,10 +168,6 @@
       toggleLoader(1, "hidden");
 
       addText("reCaptcha script should be ready!");
-    }
-
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     function onClickSignup(e) {
@@ -213,7 +206,7 @@
       );
       const frm = document.getElementById("mySignupForm");
       const params = new URLSearchParams([...new FormData(frm).entries()]);
-      params.append("RecaptchaToken",recaptok);
+      params.append("RecaptchaToken", recaptok);
       fetch("https://localhost:5001/public/signup?" + params, {
         method: "POST",
         body: params,
@@ -244,11 +237,16 @@
             document.getElementById("SignupButton").disabled = true;
             document.getElementById("RecaptchaButton").disabled = true;
 
+            addText(
+              "Refresh page or click the clear button for a hard reset. Then you can go another round."
+            );
+
             addText("END LOG.");
           });
       });
     }
 
+    //utils
     function fromUTF8Array(data) {
       // array of bytes
       var str = "",
@@ -302,6 +300,17 @@
     function clearText() {
       document.getElementById("log").value = "";
     }
+  
+    function toggleLoader(loaderNum, visibility) {
+      document.getElementById(
+        "loader" + loaderNum
+      ).style.visibility = visibility;
+    }
+  
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  
   </script>
 </body>
 
