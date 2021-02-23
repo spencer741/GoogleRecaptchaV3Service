@@ -11,6 +11,7 @@ Example demo for my [dev.to article](https://dev.to/spencer741/google-recaptcha-
 
 ### Visual demo
 After running, https://localhost:5001/ takes you to the home page.
+![](Screen Shot 2021-02-23 at 8.17.24 AM.png)
 
 ### Issues
 * If there are any issues, open an issue.
