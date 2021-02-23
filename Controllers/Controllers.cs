@@ -31,7 +31,7 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SignUpModel SignUpData)
+        public async Task<IActionResult> Post([FromQuery] SignUpModel SignUpData)
         {
             GRequestModel rm = new GRequestModel(SignUpData.RecaptchaToken,
                                                  HttpContext.Connection.RemoteIpAddress.ToString());
@@ -40,13 +40,14 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Controllers
 
             if(!await _gService.Execute())
             {
-                return StatusCode(500);
+                //return error codes string.
+                return Ok(_gService.Response.error_codes);
             }
          
             //call Business layer
 
             //return result
-            return Ok("You are really really not a robot");
+            return Ok("Server-side Google reCaptcha validation successfull!");
         }
     } 
 }

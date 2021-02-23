@@ -1,129 +1,285 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Signup</title>
-    <style>
-      form {
-        float: left;
-        border: 1px solid red;
-        margin: 10px;
+
+<head>
+  <title>Signup</title>
+  <style>
+    form {
+      float: left;
+      border: 1px solid red;
+      margin: 10px;
+
+    }
+
+    input,
+    label,
+    td,
+    h3 {
+      display: block;
+      padding: 5px;
+
+    }
+
+    .loader {
+      float: right;
+      padding: 2px;
+
+
+      border: 2px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 2px solid #3498db;
+      width: 15px;
+      height: 15px;
+      -webkit-animation: spin 2s linear infinite;
+      /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
       }
-      input, label,td {
-    display:block;
-    padding: 5px;
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Google Recaptcha V3 Demo </h3>
+  <form id="myRecaptchaForm">
+
+    <table>
+      <tr>
+        <td>
+          <label for="RecaptchaKey">Gooogle reCaptcha sitekey</label><textarea required
+            style="display: inline-table;width: 185px;" id="RecaptchaKey" name="RecaptchaKey"></textarea>
+        </td>
+        <td><input style="display: inline-table;width: 150px;" id="RecaptchaButton" type="submit" value="Submit" />
+          <div id="loader1" class="loader"></div>
+        </td>
+
+      </tr>
+    </table>
+  </form>
+
+  <form id="mySignupForm">
+    <table>
+      <tr>
+        <td>
+          <label for="FirstName">First Name:</label><input required id="FirstName" name="FirstName" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="LastName">Last Name:</label><input required id="LastName" name="LastName" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="Email">Email Address:</label><input required id="Email" name="Email" />
+        </td>
+      </tr>
+      <tr>
+        <td><input style="display: inline-table;width: 125px;" id="SignupButton" type="submit" value="Submit" />
+          <div id="loader2" class="loader"></div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <form>
+    <tr>
+      <td>
+        <textarea readonly style="margin: 5px; width: 300px; height: 300px" id="log"></textarea>
+      </td>
+    </tr>
+  </form>
+  <form>
+    <button style="background-color: gold" onclick="clearText()">
+      Clear Log & Refresh
+    </button>
+  </form>
+  <script>
+
+    var globkey = "";
+    window.onload = function () {
+      document.getElementById("log").scrollTop = document.getElementById("log").scrollHeight ;
+      document
+        .getElementById("SignupButton")
+        .addEventListener("click", onClickSignup, false);
+      document
+        .getElementById("RecaptchaButton")
+        .addEventListener("click", onClickSiteKey, false);
+      document.getElementById("SignupButton").disabled = true;
+
+      toggleLoader(1, "hidden");
+      toggleLoader(2, "hidden");
+    };
+
+    //visible/hidden
+    function toggleLoader(loaderNum, visibility) {
+      document.getElementById("loader" + loaderNum).style.visibility = visibility;
+    }
+
+    async function onClickSiteKey(e) {
+      e.preventDefault();
+ 
+      globkey = document.getElementById("RecaptchaKey").value;
+
+      if(globkey < 10)
+      {
+        return;
+      }
+
+      toggleLoader(1, "visible");
+      document.getElementById("SignupButton").disabled = true;
+      document.getElementById("RecaptchaButton").disabled = true;
+
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://www.google.com/recaptcha/api.js?render=" + globkey;
+      document.body.appendChild(script);
+      addText(
+        "Dynamically added Google reCaptcha script to the page with your sitekey."
+      );
+
+      addText("Waiting for 5 seconds, give scripts time to load.");
+
+      await sleep(5000);
+      document.getElementById("RecaptchaButton").disabled = false;
+      document.getElementById("SignupButton").disabled = false;
+      toggleLoader(1, "hidden");
+
+      addText("reCaptcha script should be ready!");
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function onClickSignup(e) {
+      e.preventDefault();
+      var form = document.getElementById("mySignupForm").elements;
+
+for(var i = 0; i < form.length; i++){
+	if(form[i].type == 'text'){
+		if(form[i].value < 1)
+    {
+      return;
+    }
+  }
 }
 
+toggleLoader(2, "visible");
+      grecaptcha.ready(function () {
+        addText("Executing 1st reCaptcha validation (frontend -> Google).");
+        grecaptcha.execute(globkey, { action: "submit" }).then(
+          function (token) {
+            //success
+            addText("Received token from Google: " + token);
+            sendData(token);
+          },
+          function (reason) {
+            //error
+            addText(reason);
+            toggleLoader(2, "hidden");
+          }
+        );
 
-    </style>
-  </head>
-  <body>
-    <h3 class="override">Google Recaptcha V3 Demo</h3>
-    <form id="myRecaptchaForm">
-      <table>
-        <tr>
-    
-          <td><label for="recaptchaKey">Gooogle reCaptcha sitekey</label><input id="RecaptchaKey" name="RecaptchaKey" /></td>
-          <td><input type="button" value="Submit" onclick="onClickSiteKey()"/></td>
-        </tr>
-      </table>
-    </form>
 
-  
-    <form id="mySignupForm">
-      <table>
-        <tr>
-          
-          <td><label for="FirstName">First Name:</label><input id="FirstName" name="FirstName" /></td>
-        </tr>
-        <tr>
-         
-          <td> <label for="LastName">Last Name:</label><input id="LastName" name="LastName" /></td>
-        </tr>
-        <tr>
-          
-          <td><label for="Email">Email Address:</label><input id="Email" name="Email" /></td>
-        </tr>
-        <tr>
-          <td><input type="button" value="Submit" onclick="onClickSignup()"/></td>
-        </tr>
-      </table>
-    </form>
-<form>
-  <tr>
-    <td>
-    <textarea readonly style="margin: 5px; width:300px; height: 300px" id="log"></textarea>
-    </td></tr>
-  </form> 
-    <script>
-      function onClickSiteKey(e) {
-        //e.preventDefault();
-        // Create the element
-        key = document.getElementById("RecaptchaKey").value;
-
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "https://www.google.com/recaptcha/api.js?render=" + key;
-        document.body.appendChild(script);
-      }
-
-      function onClickSignup(e) {
-        //e.preventDefault();
-        grecaptcha.ready(function () {
-          grecaptcha.execute("reCAPTCHA_site_key", { action: "submit" }).then(
-            function (token) {
-              //success
-              sendData(token);
-            },
-            function (reason) {
-              //error
-              alert(reason);
-              console.log(reason);
-            }
-          );
-        });
-      }
-
-      function sendData(recaptok) {
-        const XHR = new XMLHttpRequest();
-
- // Access the form element...
- const form = document.getElementById("myForm");
-
-        // Bind the FormData object and the form element
-        const FD = new FormData(form);
-
-        console.log(FD);
-
-        // Define what happens on successful data submission
-        XHR.addEventListener("load", function (event) {
-          alert(event.target.responseText);
-        });
-
-        // Define what happens in case of error
-        XHR.addEventListener("error", function (event) {
-          alert("Oops! Something went wrong.");
-        });
-
-        // Set up our request
-        XHR.open("POST", "https://localhost:5001/public/signup");
-
-        // The data sent is what the user provided in the form
-        XHR.send(FD);
-      }
-
-     
-
-      // ...and take over its submit event.
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        sendData();
       });
+    }
 
-      function addText(event) {
-    var targ = event.target || event.srcElement;
-    document.getElementById("log").value += targ.textContent || targ.innerText;
-}
-    </script>
-  </body>
+    async function sendData(recaptok) {
+      addText("Sending token to server for 2nd validation (frontend -> backend).");
+      const frm = document.getElementById("mySignupForm");
+      const params = new URLSearchParams([...new FormData(frm).entries()]);
+      fetch("https://localhost:5001/public/signup?" + params, {
+        method: "POST",
+        body: params,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            const errorBuild = {
+              type: "Error",
+              message: response.message || "Something went wrong",
+              data: response.data || "",
+              code: response.code || "",
+            };
+
+            addText("Error: " + JSON.stringify(errorBuild));
+            toggleLoader(2, "hidden");
+            return;
+          }
+
+          response.body.getReader().read().then(({ done, value }) => {
+            var converted = fromUTF8Array(value);
+            addText("Validation status from server: " + converted);
+            //don't need to keep reading. responses are short by default on this.
+            //I don't know what js uses as the default chunk size... don't want to
+            //write the recursive stuff. 
+            toggleLoader(2, "hidden");
+          document.getElementById("SignupButton").disabled = true;
+          document.getElementById("RecaptchaButton").disabled = true;
+          
+          addText("END LOG.");
+          });
+
+
+        })
+       
+    }
+
+    function fromUTF8Array(data) { // array of bytes
+      var str = '',
+        i;
+
+      for (i = 0; i < data.length; i++) {
+        var value = data[i];
+
+        if (value < 0x80) {
+          str += String.fromCharCode(value);
+        } else if (value > 0xBF && value < 0xE0) {
+          str += String.fromCharCode((value & 0x1F) << 6 | data[i + 1] & 0x3F);
+          i += 1;
+        } else if (value > 0xDF && value < 0xF0) {
+          str += String.fromCharCode((value & 0x0F) << 12 | (data[i + 1] & 0x3F) << 6 | data[i + 2] & 0x3F);
+          i += 2;
+        } else {
+          // surrogate pair
+          var charCode = ((value & 0x07) << 18 | (data[i + 1] & 0x3F) << 12 | (data[i + 2] & 0x3F) << 6 | data[i + 3] & 0x3F) - 0x010000;
+
+          str += String.fromCharCode(charCode >> 10 | 0xD800, charCode & 0x03FF | 0xDC00);
+          i += 3;
+        }
+      }
+
+      return str;
+    }
+
+    function addText(txt) {
+      txt += "\n\n";
+      document.getElementById("log").value += txt;
+      document.getElementById("log").scrollTop = document.getElementById("log").scrollHeight;
+    }
+
+    function clearText() {
+      document.getElementById("log").value = "";
+    }
+  </script>
+</body>
+
 </html>
