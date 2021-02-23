@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
 using System.Net.Http;
+using System.IO;
+using System.Text;
+using System.Runtime.Serialization.Json;
 
 namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
 {
@@ -20,7 +23,7 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
         {
         }
     }
-    
+
     public interface IGoogleRecaptchaV3Service
     {
         HttpClient _httpClient { get; set; }
@@ -37,6 +40,10 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
         public GRequestModel Request { get; set; }
 
         public GResponseModel Response { get; set; }
+
+        public HttpRequestException HttpReqException { get; set; }
+
+        public Exception GeneralException { get; set; }
 
         public GoogleRecaptchaV3Service(HttpClient httpClient)
         {
@@ -65,42 +72,59 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
             // client and any client handling from there on.
             try
             {
-                //formulate request
-                string it = Request.path + '?' + HttpUtility.UrlPathEncode($"secret={Request.secret}&response={Request.response}&remoteip={Request.remoteip}");
-                StringContent content = new StringContent(it);
 
-                //log
-                Console.WriteLine($"Serialized Request: {content}");
+                //Don't to forget to invoke any loggers in the logic below.
+
+                //formulate request
+                string builtURL = Request.path + '?' + HttpUtility.UrlPathEncode($"secret={Request.secret}&response={Request.response}&remoteip={Request.remoteip}");
+                StringContent content = new StringContent(builtURL);
+
+                Console.WriteLine($"Sent Request {builtURL}");
 
                 //send request, await.
-                HttpResponseMessage response = await _httpClient.PostAsync(it, null);
+                HttpResponseMessage response = await _httpClient.PostAsync(builtURL, null);
                 response.EnsureSuccessStatusCode();
 
                 //read response
-                string res = await response.Content.ReadAsStringAsync();
+                byte[] res = await response.Content.ReadAsByteArrayAsync();
 
-                //log
-                Console.WriteLine($"De-serialized Response: {res}");
+                string logres = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Retrieved Response: {logres}");
 
-                //read response stream, await
-                System.IO.Stream responseStream = await response.Content.ReadAsStreamAsync();
+                //Serialize into GReponse type
+                using (MemoryStream ms = new MemoryStream(res))
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GResponseModel));
+                    Response = (GResponseModel)serializer.ReadObject(ms);
+                }
 
-                //De-serialize into GReponse type.
-                Response = await JsonSerializer.DeserializeAsync<GResponseModel>(responseStream);
+                //check if business success
+                if (!Response.success)
+                {
+                    throw new CaptchaRequestException();
+                }
 
                 //return bool.
                 return true; //response.IsSuccessStatusCode; <- don't need this. EnsureSuccessStatusCode is now in play.
             }
             catch (HttpRequestException hre)
             {
-                //handle http error code. (perhaps switch-case on status?)
+                //handle http error code.
+                HttpReqException = hre;
+
                 //invoke logger accordingly
+
+                //only returning bool. It is ultimately up to the calling procedure
+                //to decide what data it wants from the Service.
                 return false;
             }
             catch (CaptchaRequestException ex)
             {
-                // Here are the possible "business" level codes:
-                /*
+
+                //Business-level error... values are accessible in error-codes array.
+                //this catch block mainly serves for logging purposes. 
+
+                /*  Here are the possible "business" level codes:
                     missing-input-secret 	The secret parameter is missing.
                     invalid-input-secret 	The secret parameter is invalid or malformed.
                     missing-input-response 	The response parameter is missing.
@@ -108,13 +132,22 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
                     bad-request 	        The request is invalid or malformed.
                     timeout-or-duplicate 	The response is no longer valid: either is too old or has been used previously.
                 */
+
                 //invoke logger accordingly 
+
+                //only returning bool. It is ultimately up to the calling procedure 
+                //to decide what data it wants from the Service.
                 return false;
             }
             catch (Exception ex)
             {
                 // Generic unpredictable error
+                GeneralException = ex;
+
                 // invoke logger accordingly
+
+                //only returning bool. It is ultimately up to the calling procedure 
+                //to decide what data it wants from the Service.
                 return false;
             }
         }
