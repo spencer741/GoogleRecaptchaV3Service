@@ -9,9 +9,10 @@ Example demo for my [dev.to article](https://dev.to/spencer741/google-recaptcha-
 ### To run:
 > dotnet run
 
-### Visual demo
+### Simple visual demo
 After running, https://localhost:5001/ takes you to the home page.
-![](Screen Shot 2021-02-23 at 8.17.24 AM.png)
+
+![](https://github.com/spencer741/GoogleRecaptchaV3Service/blob/main/Screen%20Shot%202021-02-23%20at%208.17.24%20AM.png)
 
 ### Issues
 * If there are any issues, open an issue.
