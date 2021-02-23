@@ -1,18 +1,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Threading.Tasks;
-using System.Reflection;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Data;
 using AspNetCoreRecaptchaV3ValidationDemo.Tooling;
 
 namespace AspNetCoreRecaptchaV3ValidationDemo.Controllers
 {
-   public class SignUpModel
+    public class SignUpModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -35,19 +29,19 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Controllers
         {
             GRequestModel rm = new GRequestModel(SignUpData.RecaptchaToken,
                                                  HttpContext.Connection.RemoteIpAddress.ToString());
-            
+
             _gService.InitializeRequest(rm);
 
-            if(!await _gService.Execute())
+            if (!await _gService.Execute())
             {
                 //return error codes string.
                 return Ok(_gService.Response.error_codes);
             }
-         
+
             //call Business layer
 
             //return result
             return Ok("Server-side Google reCaptcha validation successfull!");
         }
-    } 
+    }
 }

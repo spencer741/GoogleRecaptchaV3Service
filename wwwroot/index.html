@@ -1,320 +1,304 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Signup</title>
-    <style>
-      form {
-        float: left;
-        border: 1px solid red;
-        margin: 10px;
-      }
 
-      input,
-      label,
-      td,
-      h3 {
-        display: block;
-        padding: 5px;
-      }
+<head>
+  <title>Signup</title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link rel="icon" href="data:;base64,=">
 
-      .loader {
-        float: right;
-        padding: 2px;
+  <style>
+    form {
+      float: left;
+      border: 1px solid red;
+      margin: 10px;
+    }
 
-        border: 2px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 2px solid #3498db;
-        width: 15px;
-        height: 15px;
-        -webkit-animation: spin 2s linear infinite;
-        /* Safari */
-        animation: spin 2s linear infinite;
-      }
+    input,
+    label,
+    td,
+    h3 {
+      display: block;
+      padding: 5px;
+    }
 
+    .loader {
+      float: right;
+      padding: 2px;
+
+      border: 2px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 2px solid #3498db;
+      width: 15px;
+      height: 15px;
+      -webkit-animation: spin 2s linear infinite;
       /* Safari */
-      @-webkit-keyframes spin {
-        0% {
-          -webkit-transform: rotate(0deg);
-        }
+      animation: spin 2s linear infinite;
+    }
 
-        100% {
-          -webkit-transform: rotate(360deg);
-        }
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
       }
 
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
+      100% {
+        -webkit-transform: rotate(360deg);
       }
-    </style>
-  </head>
+    }
 
-  <body>
-    <h3>Google Recaptcha V3 Demo</h3>
-    <form id="myRecaptchaForm">
-      <table>
-        <tr>
-          <td>
-            <label for="RecaptchaKey">Gooogle reCaptcha sitekey</label
-            ><textarea
-              required
-              style="display: inline-table; width: 185px"
-              id="RecaptchaKey"
-              name="RecaptchaKey"
-            ></textarea>
-          </td>
-          <td>
-            <input
-              style="display: inline-table; width: 150px"
-              id="RecaptchaButton"
-              type="submit"
-              value="Submit"
-            />
-            <div id="loader1" class="loader"></div>
-          </td>
-        </tr>
-      </table>
-    </form>
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
 
-    <form id="mySignupForm">
-      <table>
-        <tr>
-          <td>
-            <label for="FirstName">First Name:</label
-            ><input required id="FirstName" name="FirstName" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="LastName">Last Name:</label
-            ><input required id="LastName" name="LastName" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="Email">Email Address:</label
-            ><input required id="Email" name="Email" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              style="display: inline-table; width: 125px"
-              id="SignupButton"
-              type="submit"
-              value="Submit"
-            />
-            <div id="loader2" class="loader"></div>
-          </td>
-        </tr>
-      </table>
-    </form>
-    <form>
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Google Recaptcha V3 Demo</h3>
+  <form id="myRecaptchaForm">
+    <table>
       <tr>
         <td>
-          <textarea
-            readonly
-            style="margin: 5px; width: 300px; height: 300px"
-            id="log"
-          ></textarea>
+          <label for="RecaptchaKey">Gooogle reCaptcha sitekey</label><textarea required
+            style="display: inline-table; width: 185px" id="RecaptchaKey" name="RecaptchaKey"></textarea>
+        </td>
+        <td>
+          <input style="display: inline-table; width: 150px" id="RecaptchaButton" type="submit" value="Submit" />
+          <div id="loader1" class="loader"></div>
         </td>
       </tr>
-    </form>
-    <form>
-      <button style="background-color: gold" onclick="clearText()">
-        Clear Log & Refresh
-      </button>
-    </form>
-    <script>
-      var globkey = "";
-      window.onload = function () {
-        document.getElementById("log").scrollTop = document.getElementById(
-          "log"
-        ).scrollHeight;
-        document
-          .getElementById("SignupButton")
-          .addEventListener("click", onClickSignup, false);
-        document
-          .getElementById("RecaptchaButton")
-          .addEventListener("click", onClickSiteKey, false);
-        document.getElementById("SignupButton").disabled = true;
+    </table>
+  </form>
 
-        toggleLoader(1, "hidden");
-        toggleLoader(2, "hidden");
-      };
+  <form id="mySignupForm">
+    <table>
+      <tr>
+        <td>
+          <label for="FirstName">First Name:</label><input required id="FirstName" name="FirstName" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="LastName">Last Name:</label><input required id="LastName" name="LastName" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="Email">Email Address:</label><input required id="Email" name="Email" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input style="display: inline-table; width: 125px" id="SignupButton" type="submit" value="Submit" />
+          <div id="loader2" class="loader"></div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <form>
+    <tr>
+      <td>
+        <textarea readonly style="margin: 5px; width: 300px; height: 300px" id="log"></textarea>
+      </td>
+    </tr>
+  </form>
+  <form>
+    <button style="background-color: gold" onclick="clearText()">
+      Clear Log & Refresh
+    </button>
+  </form>
+  <script>
+    var globkey = "";
+    window.onload = function () {
+      document.getElementById("log").scrollTop = document.getElementById(
+        "log"
+      ).scrollHeight;
+      document
+        .getElementById("SignupButton")
+        .addEventListener("click", onClickSignup, false);
+      document
+        .getElementById("RecaptchaButton")
+        .addEventListener("click", onClickSiteKey, false);
+      document.getElementById("SignupButton").disabled = true;
 
-      //visible/hidden
-      function toggleLoader(loaderNum, visibility) {
-        document.getElementById(
-          "loader" + loaderNum
-        ).style.visibility = visibility;
+      toggleLoader(1, "hidden");
+      toggleLoader(2, "hidden");
+    };
+
+    //visible/hidden
+    function toggleLoader(loaderNum, visibility) {
+      document.getElementById(
+        "loader" + loaderNum
+      ).style.visibility = visibility;
+    }
+
+    async function onClickSiteKey(e) {
+      e.preventDefault();
+
+      globkey = document.getElementById("RecaptchaKey").value;
+
+      if (globkey < 10) {
+        return;
       }
 
-      async function onClickSiteKey(e) {
-        e.preventDefault();
+      toggleLoader(1, "visible");
+      document.getElementById("SignupButton").disabled = true;
+      document.getElementById("RecaptchaButton").disabled = true;
 
-        globkey = document.getElementById("RecaptchaKey").value;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src =
+        "https://www.google.com/recaptcha/api.js?render=" + globkey;
+      document.body.appendChild(script);
+      addText(
+        "Dynamically added Google reCaptcha script to the page with your sitekey."
+      );
 
-        if (globkey < 10) {
+      addText("Waiting for 5 seconds, give scripts time to load.");
+
+      await sleep(5000);
+      document.getElementById("RecaptchaButton").disabled = false;
+      document.getElementById("SignupButton").disabled = false;
+      toggleLoader(1, "hidden");
+
+      addText("reCaptcha script should be ready!");
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function onClickSignup(e) {
+      e.preventDefault();
+      var form = document.getElementById("mySignupForm").elements;
+
+      for (var i = 0; i < form.length; i++) {
+        if (form[i].type == "text") {
+          if (form[i].value < 1) {
+            return;
+          }
+        }
+      }
+
+      toggleLoader(2, "visible");
+      grecaptcha.ready(function () {
+        addText("Executing 1st reCaptcha validation (frontend -> Google).");
+        grecaptcha.execute(globkey, { action: "submit" }).then(
+          function (token) {
+            //success
+            addText("Received token from Google: " + token);
+            sendData(token);
+          },
+          function (reason) {
+            //error
+            addText(reason);
+            toggleLoader(2, "hidden");
+          }
+        );
+      });
+    }
+
+    async function sendData(recaptok) {
+      addText(
+        "Sending token to server for 2nd validation (frontend -> backend)."
+      );
+      const frm = document.getElementById("mySignupForm");
+      const params = new URLSearchParams([...new FormData(frm).entries()]);
+      fetch("https://localhost:5001/public/signup?" + params, {
+        method: "POST",
+        body: params,
+      }).then((response) => {
+        if (!response.ok) {
+          const errorBuild = {
+            type: "Error",
+            message: response.message || "Something went wrong",
+            data: response.data || "",
+            code: response.code || "",
+          };
+
+          addText("Error: " + JSON.stringify(errorBuild));
+          toggleLoader(2, "hidden");
           return;
         }
 
-        toggleLoader(1, "visible");
-        document.getElementById("SignupButton").disabled = true;
-        document.getElementById("RecaptchaButton").disabled = true;
-
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src =
-          "https://www.google.com/recaptcha/api.js?render=" + globkey;
-        document.body.appendChild(script);
-        addText(
-          "Dynamically added Google reCaptcha script to the page with your sitekey."
-        );
-
-        addText("Waiting for 5 seconds, give scripts time to load.");
-
-        await sleep(5000);
-        document.getElementById("RecaptchaButton").disabled = false;
-        document.getElementById("SignupButton").disabled = false;
-        toggleLoader(1, "hidden");
-
-        addText("reCaptcha script should be ready!");
-      }
-
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
-
-      function onClickSignup(e) {
-        e.preventDefault();
-        var form = document.getElementById("mySignupForm").elements;
-
-        for (var i = 0; i < form.length; i++) {
-          if (form[i].type == "text") {
-            if (form[i].value < 1) {
-              return;
-            }
-          }
-        }
-
-        toggleLoader(2, "visible");
-        grecaptcha.ready(function () {
-          addText("Executing 1st reCaptcha validation (frontend -> Google).");
-          grecaptcha.execute(globkey, { action: "submit" }).then(
-            function (token) {
-              //success
-              addText("Received token from Google: " + token);
-              sendData(token);
-            },
-            function (reason) {
-              //error
-              addText(reason);
-              toggleLoader(2, "hidden");
-            }
-          );
-        });
-      }
-
-      async function sendData(recaptok) {
-        addText(
-          "Sending token to server for 2nd validation (frontend -> backend)."
-        );
-        const frm = document.getElementById("mySignupForm");
-        const params = new URLSearchParams([...new FormData(frm).entries()]);
-        fetch("https://localhost:5001/public/signup?" + params, {
-          method: "POST",
-          body: params,
-        }).then((response) => {
-          if (!response.ok) {
-            const errorBuild = {
-              type: "Error",
-              message: response.message || "Something went wrong",
-              data: response.data || "",
-              code: response.code || "",
-            };
-
-            addText("Error: " + JSON.stringify(errorBuild));
+        response.body
+          .getReader()
+          .read()
+          .then(({ done, value }) => {
+            var converted = fromUTF8Array(value);
+            addText("Validation status from server: " + converted);
+            //don't need to keep reading. responses are short by default on this.
+            //I don't know what js uses as the default chunk size... don't want to
+            //write the recursive stuff.
             toggleLoader(2, "hidden");
-            return;
-          }
+            document.getElementById("SignupButton").disabled = true;
+            document.getElementById("RecaptchaButton").disabled = true;
 
-          response.body
-            .getReader()
-            .read()
-            .then(({ done, value }) => {
-              var converted = fromUTF8Array(value);
-              addText("Validation status from server: " + converted);
-              //don't need to keep reading. responses are short by default on this.
-              //I don't know what js uses as the default chunk size... don't want to
-              //write the recursive stuff.
-              toggleLoader(2, "hidden");
-              document.getElementById("SignupButton").disabled = true;
-              document.getElementById("RecaptchaButton").disabled = true;
+            addText("END LOG.");
+          });
+      });
+    }
 
-              addText("END LOG.");
-            });
-        });
-      }
+    function fromUTF8Array(data) {
+      // array of bytes
+      var str = "",
+        i;
 
-      function fromUTF8Array(data) {
-        // array of bytes
-        var str = "",
-          i;
+      for (i = 0; i < data.length; i++) {
+        var value = data[i];
 
-        for (i = 0; i < data.length; i++) {
-          var value = data[i];
+        if (value < 0x80) {
+          str += String.fromCharCode(value);
+        } else if (value > 0xbf && value < 0xe0) {
+          str += String.fromCharCode(
+            ((value & 0x1f) << 6) | (data[i + 1] & 0x3f)
+          );
+          i += 1;
+        } else if (value > 0xdf && value < 0xf0) {
+          str += String.fromCharCode(
+            ((value & 0x0f) << 12) |
+            ((data[i + 1] & 0x3f) << 6) |
+            (data[i + 2] & 0x3f)
+          );
+          i += 2;
+        } else {
+          // surrogate pair
+          var charCode =
+            (((value & 0x07) << 18) |
+              ((data[i + 1] & 0x3f) << 12) |
+              ((data[i + 2] & 0x3f) << 6) |
+              (data[i + 3] & 0x3f)) -
+            0x010000;
 
-          if (value < 0x80) {
-            str += String.fromCharCode(value);
-          } else if (value > 0xbf && value < 0xe0) {
-            str += String.fromCharCode(
-              ((value & 0x1f) << 6) | (data[i + 1] & 0x3f)
-            );
-            i += 1;
-          } else if (value > 0xdf && value < 0xf0) {
-            str += String.fromCharCode(
-              ((value & 0x0f) << 12) |
-                ((data[i + 1] & 0x3f) << 6) |
-                (data[i + 2] & 0x3f)
-            );
-            i += 2;
-          } else {
-            // surrogate pair
-            var charCode =
-              (((value & 0x07) << 18) |
-                ((data[i + 1] & 0x3f) << 12) |
-                ((data[i + 2] & 0x3f) << 6) |
-                (data[i + 3] & 0x3f)) -
-              0x010000;
-
-            str += String.fromCharCode(
-              (charCode >> 10) | 0xd800,
-              (charCode & 0x03ff) | 0xdc00
-            );
-            i += 3;
-          }
+          str += String.fromCharCode(
+            (charCode >> 10) | 0xd800,
+            (charCode & 0x03ff) | 0xdc00
+          );
+          i += 3;
         }
-
-        return str;
       }
 
-      function addText(txt) {
-        txt += "\n\n";
-        document.getElementById("log").value += txt;
-        document.getElementById("log").scrollTop = document.getElementById(
-          "log"
-        ).scrollHeight;
-      }
+      return str;
+    }
 
-      function clearText() {
-        document.getElementById("log").value = "";
-      }
-    </script>
-  </body>
+    function addText(txt) {
+      txt += "\n\n";
+      document.getElementById("log").value += txt;
+      document.getElementById("log").scrollTop = document.getElementById(
+        "log"
+      ).scrollHeight;
+    }
+
+    function clearText() {
+      document.getElementById("log").value = "";
+    }
+  </script>
+</body>
+
 </html>

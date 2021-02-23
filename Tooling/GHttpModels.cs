@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
 {
-
     public class GRequestModel
     {
         public string path;
@@ -17,9 +16,10 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
             remoteip = remip;
             secret = Startup.Configuration["GoogleRecaptchaV3:Secret"];
             path = Startup.Configuration["GoogleRecaptchaV3:ApiUrl"];
-            if(String.IsNullOrWhiteSpace(secret) || String.IsNullOrWhiteSpace(path))
+            if (String.IsNullOrWhiteSpace(secret) || String.IsNullOrWhiteSpace(path))
             {
-                throw new Exception("Invalid 'Secret' and 'Path' properties in appsettings.json. Parent: GoogleRecaptchaV3.");
+                //Invoke logger
+                throw new Exception("Invalid 'Secret' or 'Path' properties in appsettings.json. Parent: GoogleRecaptchaV3.");
             }
         }
     }
