@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Signup</title>
+    <style>
+      form {
+        float: left;
+        border: 1px solid red;
+        margin: 10px;
+      }
+      input, label,td {
+    display:block;
+    padding: 5px;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <h3 class="override">Google Recaptcha V3 Demo</h3>
+    <form id="myRecaptchaForm">
+      <table>
+        <tr>
+    
+          <td><label for="recaptchaKey">Gooogle reCaptcha sitekey</label><input id="RecaptchaKey" name="RecaptchaKey" /></td>
+          <td><input type="button" value="Submit" onclick="onClickSiteKey()"/></td>
+        </tr>
+      </table>
+    </form>
+
+  
+    <form id="mySignupForm">
+      <table>
+        <tr>
+          
+          <td><label for="FirstName">First Name:</label><input id="FirstName" name="FirstName" /></td>
+        </tr>
+        <tr>
+         
+          <td> <label for="LastName">Last Name:</label><input id="LastName" name="LastName" /></td>
+        </tr>
+        <tr>
+          
+          <td><label for="Email">Email Address:</label><input id="Email" name="Email" /></td>
+        </tr>
+        <tr>
+          <td><input type="button" value="Submit" onclick="onClickSignup()"/></td>
+        </tr>
+      </table>
+    </form>
+<form>
+  <tr>
+    <td>
+    <textarea readonly style="margin: 5px; width:300px; height: 300px" id="log"></textarea>
+    </td></tr>
+  </form> 
+    <script>
+      function onClickSiteKey(e) {
+        //e.preventDefault();
+        // Create the element
+        key = document.getElementById("RecaptchaKey").value;
+
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "https://www.google.com/recaptcha/api.js?render=" + key;
+        document.body.appendChild(script);
+      }
+
+      function onClickSignup(e) {
+        //e.preventDefault();
+        grecaptcha.ready(function () {
+          grecaptcha.execute("reCAPTCHA_site_key", { action: "submit" }).then(
+            function (token) {
+              //success
+              sendData(token);
+            },
+            function (reason) {
+              //error
+              alert(reason);
+              console.log(reason);
+            }
+          );
+        });
+      }
+
+      function sendData(recaptok) {
+        const XHR = new XMLHttpRequest();
+
+ // Access the form element...
+ const form = document.getElementById("myForm");
+
+        // Bind the FormData object and the form element
+        const FD = new FormData(form);
+
+        console.log(FD);
+
+        // Define what happens on successful data submission
+        XHR.addEventListener("load", function (event) {
+          alert(event.target.responseText);
+        });
+
+        // Define what happens in case of error
+        XHR.addEventListener("error", function (event) {
+          alert("Oops! Something went wrong.");
+        });
+
+        // Set up our request
+        XHR.open("POST", "https://localhost:5001/public/signup");
+
+        // The data sent is what the user provided in the form
+        XHR.send(FD);
+      }
+
+     
+
+      // ...and take over its submit event.
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        sendData();
+      });
+
+      function addText(event) {
+    var targ = event.target || event.srcElement;
+    document.getElementById("log").value += targ.textContent || targ.innerText;
+}
+    </script>
+  </body>
+</html>
