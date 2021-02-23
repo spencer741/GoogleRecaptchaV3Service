@@ -1,7 +1,7 @@
 # GoogleRecaptchaV3Service
 Google reCaptcha v3 server-side validation using ASP.NET Core 5.0
 
-Example demo for my [dev.to article](). All the details there.
+Example demo for my [dev.to article](https://dev.to/spencer741/google-recaptcha-v3-server-side-validation-using-asp-net-core-5-0-3hfb). All the details there.
 
 ### pre-reqs:
 [.NET SDK](https://docs.microsoft.com/en-us/dotnet/core/sdk) targeting .NET 5.
