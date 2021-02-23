@@ -36,7 +36,7 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
         [DataMember]
         public bool success { get; set; }
         [DataMember]
-        public DateTime challenge_ts { get; set; }
+        public string challenge_ts { get; set; }
         [DataMember]
         public string hostname { get; set; }
 
