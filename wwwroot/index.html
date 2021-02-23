@@ -213,6 +213,7 @@
       );
       const frm = document.getElementById("mySignupForm");
       const params = new URLSearchParams([...new FormData(frm).entries()]);
+      params.append("RecaptchaToken",recaptok);
       fetch("https://localhost:5001/public/signup?" + params, {
         method: "POST",
         body: params,
