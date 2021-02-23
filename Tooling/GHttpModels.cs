@@ -5,7 +5,7 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
 {
     public class GRequestModel
     {
-        public string path;
+        public string path { get; set; }
         public string secret { get; set; }
         public string response { get; set; }
         public string remoteip { get; set; }
@@ -25,7 +25,7 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Tooling
     }
 
     //Google's response property naming is 
-    //embarassingly inconsistent, that's why we have to 
+    //embarrassingly inconsistent, that's why we have to 
     //use DataContract and DataMember attributes,
     //so we can bind the class from properties that have 
     //naming where a C# variable by that name would be

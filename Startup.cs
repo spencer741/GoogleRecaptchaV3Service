@@ -24,9 +24,8 @@ namespace AspNetCoreRecaptchaV3ValidationDemo
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient<GoogleRecaptchaV3Service>();
-            services.AddTransient<GoogleRecaptchaV3Service>();
-
+            services.AddHttpClient<IGoogleRecaptchaV3Service,GoogleRecaptchaV3Service>();
+            services.AddTransient<IGoogleRecaptchaV3Service,GoogleRecaptchaV3Service>();
             services.AddControllers();
         }
 

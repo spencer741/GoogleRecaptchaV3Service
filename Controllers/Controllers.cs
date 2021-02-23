@@ -18,8 +18,8 @@ namespace AspNetCoreRecaptchaV3ValidationDemo.Controllers
     [Route("public/signup")]
     public class SignUp : ControllerBase
     {
-        GoogleRecaptchaV3Service _gService { get; set; }
-        public SignUp(GoogleRecaptchaV3Service gService)
+        IGoogleRecaptchaV3Service _gService { get; set; }
+        public SignUp(IGoogleRecaptchaV3Service gService)
         {
             _gService = gService;
         }
