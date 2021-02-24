@@ -7,6 +7,7 @@ Example demo for my [dev.to article](https://dev.to/spencer741/google-recaptcha-
 [.NET SDK](https://docs.microsoft.com/en-us/dotnet/core/sdk) targeting .NET 5.
 
 ### To run:
+Put your secret key in appsettings.json. (warning: it's not `.gitignore`'d. Version control responsibly.) 
 > dotnet run
 
 ### Simple visual demo
